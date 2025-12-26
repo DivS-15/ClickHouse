@@ -46,21 +46,20 @@ class TeePopen:
         self.timeout_exceeded = True
         self.terminate()
 
-    def terminate(self, wait_before_kill: int = 100) -> None:
+    def terminate(self, wait_before_kill: int = 100, poll_interval: float = 5.0) -> None:
         time_wait = 0
-        time_sleep = 5
         self.terminated_by_sigterm = True
         self.send_signal(signal.SIGTERM)
         while self.process.poll() is None and time_wait < wait_before_kill:
             logging.warning("Wait the process %s to terminate", self.process.pid)
-            sleep(time_sleep)
-            time_wait += time_sleep
+            sleep(poll_interval)
+            time_wait += poll_interval
 
         while self.process.poll() is None:
             logging.error("Process is still running. Send SIGKILL")
             self.send_signal(signal.SIGKILL)
             self.terminated_by_sigkill = True
-            sleep(time_sleep)
+            sleep(poll_interval)
 
     def __enter__(self) -> "TeePopen":
         self.process = Popen(
