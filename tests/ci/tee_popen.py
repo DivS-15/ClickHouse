@@ -56,10 +56,10 @@ class TeePopen:
             sleep(time_sleep)
             time_wait += time_sleep
 
-        self.terminated_by_sigkill = True
         while self.process.poll() is None:
             logging.error("Process is still running. Send SIGKILL")
             self.send_signal(signal.SIGKILL)
+            self.terminated_by_sigkill = True
             sleep(time_sleep)
 
     def __enter__(self) -> "TeePopen":
