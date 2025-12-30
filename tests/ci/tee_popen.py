@@ -46,7 +46,7 @@ class TeePopen:
         self.timeout_exceeded = True
         self.terminate()
 
-    def terminate(self, wait_before_kill: int = 100, poll_interval: float = 5.0) -> None:
+    def terminate(self, wait_before_kill: float = 100.0, poll_interval: float = 5.0) -> None:
         time_wait = 0
         self.terminated_by_sigterm = True
         self.send_signal(signal.SIGTERM)
