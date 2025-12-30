@@ -51,8 +51,11 @@ class TeePopen:
 
         Args:
             wait_before_kill: Seconds to wait for graceful shutdown before sending SIGKILL.
-            poll_interval: Interval between liveness checks while waiting for termination.
+            poll_interval: Interval between liveness checks while waiting for termination;
+                must be positive.
         """
+        if poll_interval <= 0:
+            raise ValueError("poll_interval must be positive")
         time_wait = 0
         self.terminated_by_sigterm = True
         self.send_signal(signal.SIGTERM)
