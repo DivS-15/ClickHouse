@@ -47,6 +47,12 @@ class TeePopen:
         self.terminate()
 
     def terminate(self, wait_before_kill: float = 100.0, poll_interval: float = 5.0) -> None:
+        """Terminate the process with SIGTERM and escalate to SIGKILL if it stays alive.
+
+        Args:
+            wait_before_kill: Seconds to wait for graceful shutdown before sending SIGKILL.
+            poll_interval: Interval between liveness checks while waiting for termination.
+        """
         time_wait = 0
         self.terminated_by_sigterm = True
         self.send_signal(signal.SIGTERM)
